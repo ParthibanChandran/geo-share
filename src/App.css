@@ -20,8 +20,17 @@ iframe {
   padding: 20px;
 }
 
+article {
+  padding: 20px;
+}
+
 input {
   height: 26px;
+}
+input, input:focus-visible {
+  border-radius: 0;
+  border: 0.8px solid grey;
+  outline: -webkit-focus-ring-color auto 0;
 }
 
 .app-container {
@@ -44,6 +53,10 @@ footer {
   }
   button {
     font-size: 0.8em;
+    margin-bottom: 8px;
+    padding: 0.4em 1em;
+  }
+  button:nth-child(2) {
     margin-left: 0;
   }
   input {
@@ -55,8 +68,11 @@ footer {
     width: 100%;
   }
   iframe {
-    padding: 10px;
-    height: 350px;
+    padding: 0px;
+    height: 400px;
+  }
+  article {
+    padding: 0;
   }
 }
 

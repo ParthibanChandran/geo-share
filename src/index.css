@@ -36,8 +36,6 @@ button {
   transition: border-color 0.25s;
   margin-left: 10px;
   height: fit-content;
-}
-button:nth-child(3) {
   margin-left: 8px;
 }
 

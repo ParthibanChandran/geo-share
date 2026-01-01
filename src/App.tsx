@@ -21,6 +21,7 @@ function App() {
   const [actualUrl, setActualUrl] = useState("");
   const [serverUrl, setServerUrl] = useState("");
   const [isRenderMap, setIsRenderMap] = useState(false);
+  const [iframeKey, setIframeKey] = useState(0)
 
   // const [fpHash, setFpHash] = useState("");
 
@@ -124,6 +125,7 @@ function App() {
   const shareUrl = async () => {
     await navigator.share({
       title: "Join my room",
+      text: "Location Share",
       url: actualUrl,
     });
   };
@@ -131,11 +133,13 @@ function App() {
   const openInNewTab = () =>
     window.open(actualUrl, "_blank", "noopener,noreferrer");
 
+  const refreshIframe = () => setIframeKey((prev) => prev + 1);
+
   return (
     <div className="app-container">
       <main>
         <div className="card">
-          <h1 className="title">📍 Location Sharing </h1>
+          <h1 className="title">📍 Live Location Sharing </h1>
           <div className="form-wrapper">
             <div className="url">
               <div className="form-row">
@@ -185,7 +189,7 @@ function App() {
             <Activity mode={isRenderMap ? "visible" : "hidden"}>
               <div className="url">
                 <div className="form-row">
-                  <label htmlFor="room-id"> Room id </label>
+                  <label htmlFor="room-id"> Room Id </label>
                   <input
                     value={roomPath}
                     type="text"
@@ -224,12 +228,20 @@ function App() {
                   />
                   Share
                 </button>
+                <button onClick={refreshIframe}>
+                  <Icon
+                    src={"https://img.icons8.com/arcade/64/refresh.png"}
+                    alt={"refresh"}
+                  />
+                  Refresh Map
+                </button>
               </div>
             </Activity>
           </div>
         </div>
         {isRenderMap && (
           <iframe
+            key={iframeKey}
             src={serverUrl}
             title="External Content"
             width="100%"
@@ -240,15 +252,39 @@ function App() {
             loading="lazy" // Optimizes page load performance
           />
         )}
-        {/* <article>
-          <h4>🔍 How does this work?</h4>
-        </article> */}
+        <article>
+          <h2>🔍 How does this work?</h2>
+          <p>
+            The browser uses the Geolocation API to continuously read the user’s
+            latitude and longitude. These coordinates are sent to the server
+            using Socket.IO, which enables real-time communication. The server
+            temporarily keeps user locations in memory and broadcasts updates
+            only to users inside the same room. When a user disconnects or
+            closes the browser, their data is immediately removed. Clicking on
+            another user’s marker calculates and displays a route using the OSRM
+            routing service.
+          </p>
+          <h2>Technology Used</h2>
+          <p>
+            React is used for the user interface to enter the name and room ID.
+            Node.js with JavaScript renders the live map on the server.
+            Leaflet.js and OSM are used to display the map.
+            Socket.IO handles real-time location updates.
+          </p>
+          <h2>Privacy &amp; Permissions</h2>
+          <p>
+            This app does not collect or store personal data. Location data is
+            used only while the app is open and is never saved in a database.
+            The only permission required is browser location (GPS) access, which
+            can be revoked at any time from browser settings.
+          </p>
+        </article>
       </main>
       <footer>
         <div>
           Crafted by{" "}
           <a href="https://parthiban-c.vercel.app" target="_blank">
-            Parthiban
+            Parthiban C
           </a>
           .
         </div>
